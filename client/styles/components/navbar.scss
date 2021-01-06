@@ -1,0 +1,7 @@
+$navbar-text-color: $color-text-light;
+$navbar-link-text-color: $color-primary;
+$navbar-divider-color: $color-primary;
+$navbar-toggler-color: $color-primary;
+$navbar-fade-out-background: transparentize(darken($color-primary, .6), .9);
+
+$navbar-toggler-size: 60px;

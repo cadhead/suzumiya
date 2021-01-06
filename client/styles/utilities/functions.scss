@@ -1,0 +1,13 @@
+@function findLightColor($color) {
+  @if type-of($color) == 'color' {
+    $l: 76%;
+
+    @if lightness($color) > 76% {
+      $l: lightness($color);
+    }
+
+    @return change-color($color, $lightness: $l);
+  }
+
+  @return $background;
+}

@@ -1,0 +1,36 @@
+{
+  "name": "samp-ucp-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf .cache public",
+    "watch": "parcel watch --no-hmr watch.html --out-dir public",
+    "build": "parcel build --no-hmr watch.html --out-dir public --public-url ./"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-custom-dist-structure": "^1.1.16",
+    "parcel-plugin-static-files-copy": "^2.5.0",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "node-sass": "^5.0.0",
+    "sass": "^1.30.0"
+  },
+  "customDistStructure": {
+    "config": {
+      ".js": "js",
+      ".css": "css",
+      ".js.map": "js",
+      ".css.map": "css",
+      "images": [
+        ".jpg",
+        ".png"
+      ]
+    },
+    "options": {
+      "development": true
+    }
+  }
+}

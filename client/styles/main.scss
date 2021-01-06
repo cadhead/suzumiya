@@ -1,0 +1,20 @@
+@import './config/variables.scss';
+@import './utilities/functions.scss';
+@import './utilities/helpers.scss';
+@import './common/reset.css';
+@import './common/font.css';
+@import './components/navbar.scss';
+
+body {
+  font-size: 14px;
+  font-family: 
+    "-apple-system",
+    BlinkMacSystemFont,
+    "Roboto",
+    Arial,
+    sans-serif;
+  letter-spacing: 1px;
+  font-weight: 100;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto
+}
