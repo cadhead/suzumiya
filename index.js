@@ -1,6 +1,11 @@
 import 'dotenv/config';
 import os from 'os';
 
+import {
+  name as APP_NAME,
+  version as APP_VERSION
+} from './package.json';
+
 import app from './app';
 import http from 'http';
 
@@ -24,7 +29,7 @@ server.listen(port, host, (error) => {
   const memoryUsageFormat = a => Math.round(((a / 1024 / 1024) * 100) / 100);
   const memUsed = memoryUsageFormat(process.memoryUsage().heapUsed);
   const memTotal = memoryUsageFormat(os.freemem());
-  const appInfo = `${process.env.APP_NAME} v.${process.env.APP_VERSION}`;
+  const appInfo = `${APP_NAME} v.${APP_VERSION}`;
 
   console.info('');
   console.info(`\x1b[32m${appInfo} running successfully.\x1b[0m`);
