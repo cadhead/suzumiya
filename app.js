@@ -28,7 +28,6 @@ app
   .use(express.static(publicsConfig.path))
   .use(connectFlash());
 
-
 if (Array.isArray(publicsConfig.extends)) {
   publicsConfig.extends.forEach(extend => {
     const { route, path } = extend;
@@ -45,5 +44,5 @@ findStatic()
   .then(() => {
     app.use(router);
   });
-  
-export default app;  
+
+export default app;

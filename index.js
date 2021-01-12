@@ -7,11 +7,13 @@ import {
 } from './package.json';
 
 import app from './app';
+import { io } from './socket.io-server';
 import http from 'http';
 
 const { console } = global;
 
 const server = http.createServer(app);
+
 const port = process.env.PORT ? Number.parseInt(process.env.PORT, 10) : 3000;
 const host = process.env.HOST || 'localhost';
 
@@ -21,6 +23,7 @@ function getDomain(addr) {
     : `http://${addr.address}:${addr.port}/`;
 }
 
+io.attach(server);
 server.listen(port, host, (error) => {
   if (error) {
     throw new Error(error);

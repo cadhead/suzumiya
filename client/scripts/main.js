@@ -1,4 +1,5 @@
 import { navbarToggler } from './navbar';
+import io from 'socket.io-client';
 
 navbarToggler({
   className: {
@@ -10,3 +11,5 @@ navbarToggler({
     navbar: 'nav-main__inner--opened'
   }
 });
+
+window.socket = io();
