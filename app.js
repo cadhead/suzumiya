@@ -10,6 +10,7 @@ import {
   sessionsConfig
 } from './config';
 import { router } from './routes';
+import { io } from './socket.io-server';
 import findStatic from './config/findStatic';
 
 const app = express();
@@ -35,6 +36,9 @@ if (Array.isArray(publicsConfig.extends)) {
     app.use(route, express.static(path));
   });
 }
+
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+io.use(wrap(session(sessionsConfig)));
 
 findStatic()
   .then(staticFiles => {
