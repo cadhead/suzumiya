@@ -22,7 +22,7 @@ export default async () => {
   const jsFilesNames = await getFilenamesFromDirMatching(jsPath, js => cond(js));
 
   return {
-    css: staticFilenamesToURLs(cssFilesNames, './css'),
-    js: staticFilenamesToURLs(jsFilesNames, './js')
+    css: staticFilenamesToURLs(cssFilesNames, '/css'),
+    js: staticFilenamesToURLs(jsFilesNames, '/js')
   };
 };
