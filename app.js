@@ -12,6 +12,7 @@ import {
 import { router } from './routes';
 import { io } from './socket.io-server';
 import findStatic from './config/findStatic';
+import { applyModules } from './modules';
 
 const app = express();
 
@@ -37,16 +38,16 @@ if (Array.isArray(publicsConfig.extends)) {
   });
 }
 
-const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
-io.use(wrap(session(sessionsConfig)));
+(async function apply() {
+  const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+  io.use(wrap(session(sessionsConfig)));
 
-findStatic()
-  .then(staticFiles => {
-    const { css, js } = staticFiles;
-    app.locals.staticFiles = { css, js };
-  })
-  .then(() => {
-    app.use(router);
-  });
+  const { css, js } = await findStatic();
+  app.locals.staticFiles = { css, js };
+
+  await applyModules();
+
+  app.use(router);
+}());
 
 export default app;
