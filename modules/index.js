@@ -1,6 +1,8 @@
 import path from 'path';
 import { getFilenamesFromDirMatching } from '../lib/helpers';
 
+const { log } = console;
+
 export const pathModules = path.join(process.cwd(), 'modules');
 
 export const applyModules = async () => {
@@ -18,6 +20,10 @@ export const applyModules = async () => {
         // eslint-disable-next-line no-new
         new Module();
       }
-    }).catch(() => null);
+    }).catch(() => {
+      if (module.default) {
+        log(`Module ${moduleName} not loaded.`);
+      }
+    });
   });
 };
