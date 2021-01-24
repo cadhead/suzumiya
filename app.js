@@ -15,6 +15,7 @@ import findStatic from './config/findStatic';
 import { applyModules } from './modules';
 
 const app = express();
+const sessionMiddleware = session(sessionsConfig);
 
 app
   .set('views', viewsConfig.path)
@@ -22,7 +23,7 @@ app
   .set('trust proxy', true);
 
 app
-  .use(session(sessionsConfig))
+  .use(sessionMiddleware)
   .use(helmet())
   .use(cookieParser())
   .use(express.json())
@@ -40,7 +41,7 @@ if (Array.isArray(publicsConfig.extends)) {
 
 (async function apply() {
   const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
-  io.use(wrap(session(sessionsConfig)));
+  io.use(wrap(sessionMiddleware));
 
   const { css, js } = await findStatic();
   app.locals.staticFiles = { css, js };

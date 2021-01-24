@@ -7627,6 +7627,34 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     navbar: 'nav-main__inner--opened'
   }
 });
-window.socket = (0, _socket.default)();
+var loc = window.location.pathname;
+
+var addMessage = function addMessage(text) {
+  var message = document.createElement('div');
+  message.innerText = text;
+  document.querySelector('#chat').appendChild(message);
+};
+
+if (loc.includes('/c/')) {
+  var socket = (0, _socket.default)(loc);
+  socket.on('chat user message', function (message) {
+    addMessage(message.text);
+  });
+
+  var sendChatMessage = function sendChatMessage(text) {
+    socket.emit('chat user message', {
+      text: text
+    });
+    addMessage(text);
+  };
+
+  var input = document.querySelector('#input');
+
+  input.onchange = function () {
+    if (!input.value.trim()) return;
+    sendChatMessage(input.value);
+    input.value = '';
+  };
+}
 },{"./navbar":"scripts/navbar.js","socket.io-client":"../node_modules/socket.io-client/build/index.js"}]},{},["scripts/main.js"], null)
 //# sourceMappingURL=/js/main.d8ebb8d6.js.map

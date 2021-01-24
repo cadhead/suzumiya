@@ -1,0 +1,10 @@
+extends layouts/wellcome.pug
+block header
+  .page-header__inner
+    include components/navbar
+block content
+  h1(style="font-weight: 200") Channel
+  p Chat -
+  div#chat(style="height: 200px; width: 300px; overflow-y: scroll")
+  div
+    input#input(type="text", style="width: 300px")
