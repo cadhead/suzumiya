@@ -24,7 +24,7 @@ function getDomain(addr) {
 }
 
 io.attach(server);
-server.listen(port, host, (error) => {
+server.listen(port, (error) => {
   if (error) {
     throw new Error(error);
   }
@@ -37,7 +37,7 @@ server.listen(port, host, (error) => {
   console.info('');
   console.info(`\x1b[32m${appInfo} running successfully.\x1b[0m`);
   console.info('');
-  console.info('\x1b[1mListening on:\x1b[34m', getDomain(server.address()), '\x1b[0m');
+  // console.info('\x1b[1mListening on:\x1b[34m', getDomain(server.address()), '\x1b[0m');
   console.info('\x1b[1mMemory usage:\x1b[0m', `${memUsed} / ${memTotal} MB`);
   if (process.env.NODE_ENV === 'development') {
     console.info('');
