@@ -21,9 +21,7 @@ export const applyModules = async () => {
         new Module();
       }
     }).catch(() => {
-      if (module.default) {
-        log(`Module ${moduleName} not loaded.`);
-      }
+      log(`Module ${moduleName} not loaded.`);
     });
   });
 };

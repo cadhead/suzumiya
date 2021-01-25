@@ -7637,23 +7637,46 @@ var addMessage = function addMessage(text) {
 
 if (loc.includes('/c/')) {
   var socket = (0, _socket.default)(loc);
+  var input = document.querySelector('#input');
+  var username = document.querySelector('#username');
   socket.on('chat user message', function (message) {
-    addMessage(message.text);
+    addMessage("".concat(message.user.username, ": ").concat(message.text));
+  });
+  socket.on('channel user join local', function (data) {
+    if (data.error) {
+      username.disabled = false;
+      username.style.color = 'red';
+      return;
+    }
+
+    window.userProfile = data;
+    addMessage("".concat(data.username, " joined"));
+    username.disabled = true;
+  });
+  socket.on('channel user join', function (data) {
+    addMessage("".concat(data.username, " joined"));
   });
 
   var sendChatMessage = function sendChatMessage(text) {
     socket.emit('chat user message', {
       text: text
     });
-    addMessage(text);
+    addMessage("You: ".concat(text));
   };
-
-  var input = document.querySelector('#input');
 
   input.onchange = function () {
     if (!input.value.trim()) return;
     sendChatMessage(input.value);
     input.value = '';
+  };
+
+  username.onkeypress = function (_ref) {
+    var keyCode = _ref.keyCode;
+    if (!username.value.trim() || keyCode !== 13) return;
+    socket.emit('channel user join', {
+      username: username.value
+    });
+    username.style.color = '';
   };
 }
 },{"./navbar":"scripts/navbar.js","socket.io-client":"../node_modules/socket.io-client/build/index.js"}]},{},["scripts/main.js"], null)

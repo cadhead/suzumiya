@@ -22,21 +22,46 @@ const addMessage = (text) => {
 
 if (loc.includes('/c/')) {
   const socket = io(loc);
+  const input = document.querySelector('#input');
+  const username = document.querySelector('#username');
 
   socket.on('chat user message', (message) => {
-    addMessage(message.text);
+    addMessage(`${message.user.username}: ${message.text}`);
+  });
+
+  socket.on('channel user join local', (data) => {
+    if (data.error) {
+      username.disabled = false;
+      username.style.color = 'red';
+
+      return;
+    }
+
+    window.userProfile = data;
+
+    addMessage(`${data.username} joined`);
+    username.disabled = true;
+  });
+
+  socket.on('channel user join', (data) => {
+    addMessage(`${data.username} joined`);
   });
 
   const sendChatMessage = (text) => {
     socket.emit('chat user message', { text });
-    addMessage(text);
+    addMessage(`You: ${text}`);
   };
-  const input = document.querySelector('#input');
 
   input.onchange = () => {
     if (!input.value.trim()) return;
     sendChatMessage(input.value);
 
     input.value = '';
+  };
+
+  username.onkeypress = ({ keyCode }) => {
+    if (!username.value.trim() || keyCode !== 13) return;
+    socket.emit('channel user join', { username: username.value });
+    username.style.color = '';
   };
 }

@@ -17,7 +17,7 @@ export default class ChannelModule {
   }
 
   static registerChatEvents(socket, chat) {
-    socket.on(EVENT_CHAT_USER_MESSAGE, (data) => chat.handleMesage(data));
+    socket.on(EVENT_CHAT_USER_MESSAGE, (data) => chat.handleMesage(socket.request.user, data));
   }
 
   static registerChannelEvents(socket, channel) {

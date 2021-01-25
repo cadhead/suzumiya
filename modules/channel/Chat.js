@@ -18,9 +18,10 @@ export class Chat {
     }
   }
 
-  handleMesage(message) {
+  handleMesage(user, message) {
     Object.assign(message, {
-      text: formatChatMessageText(message.text)
+      text: formatChatMessageText(message.text),
+      user
     });
 
     if (!message.text.trim()) {
