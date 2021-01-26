@@ -3,6 +3,8 @@ import { getFilenamesFromDirMatching } from '../lib/helpers';
 
 const { log } = console;
 
+export const collection = new Set();
+
 export const pathModules = path.join(process.cwd(), 'modules');
 
 export const applyModules = async () => {
@@ -17,8 +19,7 @@ export const applyModules = async () => {
       const Module = module.default;
 
       if (Module.allow) {
-        // eslint-disable-next-line no-new
-        new Module();
+        collection.add(new Module());
       }
     }).catch(() => {
       log(`Module ${moduleName} not loaded.`);
