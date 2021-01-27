@@ -7650,11 +7650,14 @@ if (loc.includes('/c/')) {
     }
 
     window.userProfile = data;
-    addMessage("".concat(data.username, " joined"));
+    addMessage('You joined');
     username.disabled = true;
   });
   socket.on('channel user join', function (data) {
     addMessage("".concat(data.username, " joined"));
+  });
+  socket.on('channel user leave', function (data) {
+    addMessage("".concat(data.username, " leave"));
   });
 
   var sendChatMessage = function sendChatMessage(text) {

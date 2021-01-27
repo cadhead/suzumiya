@@ -21,8 +21,11 @@ export const applyModules = async () => {
       if (Module.allow) {
         collection.add(new Module());
       }
-    }).catch(() => {
-      log(`Module ${moduleName} not loaded.`);
+    }).catch((e) => {
+      log(`Module ${moduleName} not loaded: `);
+      if (process.env.NODE_ENV === 'development') {
+        log(e.message);
+      }
     });
   });
 };

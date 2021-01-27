@@ -39,12 +39,16 @@ if (loc.includes('/c/')) {
 
     window.userProfile = data;
 
-    addMessage(`${data.username} joined`);
+    addMessage('You joined');
     username.disabled = true;
   });
 
   socket.on('channel user join', (data) => {
     addMessage(`${data.username} joined`);
+  });
+
+  socket.on('channel user leave', (data) => {
+    addMessage(`${data.username} leave`);
   });
 
   const sendChatMessage = (text) => {

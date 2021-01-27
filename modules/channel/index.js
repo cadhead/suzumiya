@@ -1,7 +1,7 @@
 import { io } from '../../socket.io-server';
-import { Manager } from './Manager';
 import { Channel } from '../../models/Channel';
 import { Chat } from './Chat';
+import { ChannelManager } from './Manager';
 import {
   EVENT_CHAT_USER_MESSAGE,
   EVENT_CHANNEL_USER_JOIN
@@ -10,33 +10,33 @@ import {
 export default class ChannelModule {
   static allow = true;
 
-  buffer = new Set();
+  list = new Set();
 
   constructor() {
     this.initChannels();
   }
 
-  static registerChatEvents(socket, chat) {
-    socket.on(EVENT_CHAT_USER_MESSAGE, (data) => chat.handleMesage(socket.request.user, data));
+  static registerEvents(channel) {
+    const { name, manager, chat } = channel;
+    io.of('/c/' + name).on('connection', (socket) => {
+      socket.on(EVENT_CHAT_USER_MESSAGE, chat.handleMessage.bind(chat, socket));
+
+      socket.on(EVENT_CHANNEL_USER_JOIN, manager.handleUserJoin.bind(manager, socket));
+      socket.on('disconnect', manager.handleUserLeave.bind(manager, socket));
+    });
   }
 
-  static registerChannelEvents(socket, channel) {
-    socket.on(EVENT_CHANNEL_USER_JOIN, (data) => channel.handleUserJoin(data));
-  }
-
-  initChannels() {
-    const all = Channel.findAll();
+  async initChannels() {
+    const all = await Channel.findAll();
 
     all.forEach((channel) => {
-      io.of(`/c/${channel.name}`).on('connection', (socket) => {
-        const manager = new Manager(socket, channel);
-        const chat = new Chat(manager);
+      const { name, titile, isPrivate } = channel;
+      if (!isPrivate) this.list.add({ name, titile });
 
-        ChannelModule.registerChatEvents(socket, chat);
-        ChannelModule.registerChannelEvents(socket, manager);
+      const manager = new ChannelManager(channel);
+      const chat = new Chat(manager);
 
-        this.buffer.add({ manager, chat });
-      });
+      ChannelModule.registerEvents({ name, chat, manager });
     });
   }
 }
